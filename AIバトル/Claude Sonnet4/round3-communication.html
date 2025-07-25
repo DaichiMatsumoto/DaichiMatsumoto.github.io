@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure金融不正検知システム - 3つの視点</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            color: #87ceeb;
+        }
+        
+        .tab-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .tab-navigation {
+            display: flex;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .tab-btn.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            transition: width 0.4s ease;
+        }
+        
+        .tab-btn.active::after {
+            width: 100%;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tab-icon {
+            font-size: 1.5rem;
+        }
+        
+        .graduate { color: #4ecdc4; }
+        .cto { color: #ff6b6b; }
+        .sales { color: #ffd700; }
+        
+        .tab-content {
+            display: none;
+            padding: 3rem;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .content-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: #ffd700;
+            border-left: 5px solid #ffd700;
+            padding-left: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .card:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 215, 0, 0.5);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+        
+        .card h3 {
+            color: #87ceeb;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .card-icon {
+            font-size: 1.5rem;
+        }
+        
+        .beginner-friendly {
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.2), rgba(78, 205, 196, 0.1));
+            border-left: 4px solid #4ecdc4;
+        }
+        
+        .technical-deep {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.1));
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .business-value {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+            border-left: 4px solid #ffd700;
+        }
+        
+        .step-by-step {
+            counter-reset: step-counter;
+        }
+        
+        .step {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 4rem;
+            margin-bottom: 2rem;
+        }
+        
+        .step::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .decision-matrix {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            margin: 2rem 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .matrix-header {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            padding: 1rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .matrix-cell {
+            padding: 1rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .roi-calculator {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .roi-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #1e3c72;
+            padding: 1rem;
+            font-weight: bold;
+        }
+        
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .comparison-table tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .highlight {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .metric-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            color: #87ceeb;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .interactive-demo {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .demo-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+        
+        .demo-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        
+        .architecture-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .flow-step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 150px;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .flow-step:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .flow-arrow {
+            font-size: 2rem;
+            color: #ffd700;
+            margin: 0 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tab-navigation {
+                flex-direction: column;
+            }
+            
+            .tab-content {
+                padding: 2rem 1rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .decision-matrix {
+                grid-template-columns: 1fr;
+            }
+            
+            .architecture-flow {
+                flex-direction: column;
+            }
+            
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏦 Azure金融不正検知システム</h1>
+            <p>3つの視点で理解する最先端アーキテクチャ</p>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab-navigation">
+                <button class="tab-btn active graduate" data-target="graduate">
+                    <span class="tab-icon">🎓</span>
+                    新卒エンジニア向け
+                </button>
+                <button class="tab-btn cto" data-target="cto">
+                    <span class="tab-icon">⚡</span>
+                    CTO向け
+                </button>
+                <button class="tab-btn sales" data-target="sales">
+                    <span class="tab-icon">💼</span>
+                    営業向け
+                </button>
+            </div>
+            
+            <!-- 新卒エンジニア向けコンテンツ -->
+            <div class="tab-content active" id="graduate">
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">🌟</span>
+                        システム全体像を理解しよう
+                    </h2>
+                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+                        金融機関では毎日数百万件のクレジットカードや振込取引が発生します。この中から<span class="highlight">不正な取引を瞬時に発見</span>するのが私たちのシステムの役割です。
+                    </p>
+                    
+                    <div class="architecture-flow">
+                        <div class="flow-step beginner-friendly">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">💳</div>
+                            <strong>取引発生</strong><br>
+                            クレジットカード使用
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step beginner-friendly">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                            <strong>データ収集</strong><br>
+                            Event Hubs
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step beginner-friendly">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🤖</div>
+                            <strong>AI判定</strong><br>
+                            機械学習
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step beginner-friendly">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚨</div>
+                            <strong>結果通知</strong><br>
+                            不正検知アラート
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">🔧</span>
+                        主要コンポーネントを学ぼう
+                    </h2>
+                    <div class="cards-grid">
+                        <div class="card technical-deep">
+                            <h3><span class="card-icon">🔄</span>災害復旧・事業継続</h3>
+                            <p><strong>要件:</strong> RPO 1分、RTO 5分</p>
+                            <p><strong>設計:</strong> マルチリージョン + Cosmos DB Global Distribution</p>
+                            <p><strong>実装:</strong> 自動フェイルオーバー、データ同期、ヘルスチェック監視</p>
+                            <div class="metric-dashboard">
+                                <div class="metric-card">
+                                    <div class="metric-value">99.999%</div>
+                                    <div class="metric-label">目標可用性</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value">5分</div>
+                                    <div class="metric-label">最大RTO</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">⚖️</span>
+                        技術リスク評価マトリクス
+                    </h2>
+                    
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>リスク要因</th>
+                                <th>影響度</th>
+                                <th>発生確率</th>
+                                <th>対策</th>
+                                <th>ステータス</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ベンダーロックイン</td>
+                                <td>High</td>
+                                <td>Medium</td>
+                                <td>マルチクラウド対応設計、標準プロトコル採用</td>
+                                <td><span class="highlight">✅ 対策済</span></td>
+                            </tr>
+                            <tr>
+                                <td>スキル不足</td>
+                                <td>High</td>
+                                <td>High</td>
+                                <td>段階的導入、外部コンサル活用、社内研修</td>
+                                <td><span class="highlight">🔄 進行中</span></td>
+                            </tr>
+                            <tr>
+                                <td>レガシー統合</td>
+                                <td>Medium</td>
+                                <td>High</td>
+                                <td>API Gateway、段階的移行計画</td>
+                                <td><span class="highlight">📋 計画中</span></td>
+                            </tr>
+                            <tr>
+                                <td>規制変更</td>
+                                <td>High</td>
+                                <td>Low</td>
+                                <td>ポリシーエンジン、自動コンプライアンス</td>
+                                <td><span class="highlight">✅ 対策済</span></td>
+                            </tr>
+                            <tr>
+                                <td>データ品質</td>
+                                <td>Medium</td>
+                                <td>Medium</td>
+                                <td>Data Quality Rules、自動検証</td>
+                                <td><span class="highlight">🔄 進行中</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">📊</span>
+                        実装ロードマップ & マイルストーン
+                    </h2>
+                    
+                    <div class="step-by-step">
+                        <div class="step">
+                            <h3>Phase 1: 基盤構築 (3ヶ月)</h3>
+                            <p><strong>完了基準:</strong> Azure基盤、ネットワーク、セキュリティ設定完了</p>
+                            <p><strong>成果物:</strong> ExpressRoute接続、Key Vault設定、基本監視</p>
+                            <p><strong>リスク:</strong> オンプレミス接続遅延、セキュリティ審査</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h3>Phase 2: データパイプライン (4ヶ月)</h3>
+                            <p><strong>完了基準:</strong> リアルタイムデータ処理基盤完成</p>
+                            <p><strong>成果物:</strong> Event Hubs、Stream Analytics、初期ML模式</p>
+                            <p><strong>リスク:</strong> データ品質問題、スループット不足</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h3>Phase 3: ML統合 (5ヶ月)</h3>
+                            <p><strong>完了基準:</strong> 本格的な不正検知機能稼働</p>
+                            <p><strong>成果物:</strong> AKS ML推論、モデル更新機構</p>
+                            <p><strong>リスク:</strong> 精度不足、レイテンシ超過</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h3>Phase 4: 運用最適化 (3ヶ月)</h3>
+                            <p><strong>完了基準:</strong> 本番運用開始、性能目標達成</p>
+                            <p><strong>成果物:</strong> 自動運用、監視ダッシュボード</p>
+                            <p><strong>リスク:</strong> 運用手順未確立、障害対応</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="interactive-demo">
+                    <h3>🔧 技術的意思決定サポート</h3>
+                    <p>詳細な技術検証結果、PoC結果、ベンダー比較資料を確認できます：</p>
+                    <button class="demo-button" onclick="showTechDocs()">技術資料を表示</button>
+                    <button class="demo-button" onclick="showRiskMatrix()">リスク分析表示</button>
+                    <div id="techDocs" style="display: none; margin-top: 2rem; text-align: left;">
+                        <h4>📋 利用可能な技術資料：</h4>
+                        <ul style="font-size: 1.1rem; line-height: 2;">
+                            <li>🔬 PoC結果レポート（性能・精度・コスト検証）</li>
+                            <li>⚖️ ベンダー比較表（Azure vs AWS vs GCP）</li>
+                            <li>🏗️ 詳細アーキテクチャ設計書</li>
+                            <li>🔒 セキュリティ監査レポート</li>
+                            <li>💰 3年間TCO詳細分析</li>
+                            <li>📈 容量計画・スケーリング戦略</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 営業向けコンテンツ -->
+            <div class="tab-content" id="sales">
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">💎</span>
+                        顧客価値提案
+                    </h2>
+                    
+                    <div class="roi-calculator">
+                        <h3>🎯 導入効果（年間）</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                            <div>
+                                <div class="roi-value">$2.8M</div>
+                                <div>不正損失削減</div>
+                            </div>
+                            <div>
+                                <div class="roi-value">$1.2M</div>
+                                <div>運用コスト削減</div>
+                            </div>
+                            <div>
+                                <div class="roi-value">$800K</div>
+                                <div>コンプライアンス費用削減</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 1.3rem; margin-top: 1rem;">
+                            <strong>総年間効果: $4.8M | ROI: 240%</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">🏆</span>
+                        競合優位性
+                    </h2>
+                    
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>比較項目</th>
+                                <th>弊社ソリューション</th>
+                                <th>競合A</th>
+                                <th>競合B</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>検知精度</td>
+                                <td><span class="highlight">99.9%</span></td>
+                                <td>97.5%</td>
+                                <td>98.2%</td>
+                            </tr>
+                            <tr>
+                                <td>応答時間</td>
+                                <td><span class="highlight">50ms</span></td>
+                                <td>200ms</td>
+                                <td>150ms</td>
+                            </tr>
+                            <tr>
+                                <td>導入期間</td>
+                                <td><span class="highlight">3-6ヶ月</span></td>
+                                <td>12-18ヶ月</td>
+                                <td>9-12ヶ月</td>
+                            </tr>
+                            <tr>
+                                <td>運用コスト</td>
+                                <td><span class="highlight">-60%</span></td>
+                                <td>-30%</td>
+                                <td>-40%</td>
+                            </tr>
+                            <tr>
+                                <td>規制対応</td>
+                                <td><span class="highlight">自動対応</span></td>
+                                <td>手動対応</td>
+                                <td>半自動</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">📈</span>
+                        顧客事例・実績
+                    </h2>
+                    <div class="cards-grid">
+                        <div class="card business-value">
+                            <h3><span class="card-icon">🏦</span>大手都市銀行A様</h3>
+                            <p><strong>課題:</strong> 従来システムの偽陽性率が高く、顧客満足度低下</p>
+                            <p><strong>効果:</strong> 偽陽性率を85%削減、カスタマーサポート負荷70%軽減</p>
+                            <div class="metric-dashboard">
+                                <div class="metric-card">
+                                    <div class="metric-value">85%</div>
+                                    <div class="metric-label">偽陽性削減</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value">70%</div>
+                                    <div class="metric-label">CS負荷軽減</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card business-value">
+                            <h3><span class="card-icon">💳</span>大手クレジット会社B様</h3>
+                            <p><strong>課題:</strong> 海外取引の不正検知精度向上が急務</p>
+                            <p><strong>効果:</strong> 海外不正検知率99.7%達成、損失額60%削減</p>
+                            <div class="metric-dashboard">
+                                <div class="metric-card">
+                                    <div class="metric-value">99.7%</div>
+                                    <div class="metric-label">検知精度</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value">60%</div>
+                                    <div class="metric-label">損失削減</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card business-value">
+                            <h3><span class="card-icon">🚀</span>フィンテック企業C様</h3>
+                            <p><strong>課題:</strong> 急成長に伴うスケーラビリティ不足</p>
+                            <p><strong>効果:</strong> 取引量10倍増に対応、システム停止時間99%削減</p>
+                            <div class="metric-dashboard">
+                                <div class="metric-card">
+                                    <div class="metric-value">10倍</div>
+                                    <div class="metric-label">取引量対応</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value">99%</div>
+                                    <div class="metric-label">停止時間削減</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">💼</span>
+                        提案プラン & 価格
+                    </h2>
+                    
+                    <div class="cards-grid">
+                        <div class="card business-value">
+                            <h3><span class="card-icon">🥉</span>スタンダードプラン</h3>
+                            <p><strong>対象:</strong> 月間取引量100万件まで</p>
+                            <p><strong>機能:</strong> 基本不正検知、標準サポート</p>
+                            <p><strong>価格:</strong> 月額 $50,000</p>
+                            <ul style="margin-top: 1rem;">
+                                <li>✅ リアルタイム検知</li>
+                                <li>✅ 基本ダッシュボード</li>
+                                <li>✅ メールサポート</li>
+                                <li>❌ カスタムモデル</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="card business-value">
+                            <h3><span class="card-icon">🥈</span>プロフェッショナルプラン</h3>
+                            <p><strong>対象:</strong> 月間取引量1,000万件まで</p>
+                            <p><strong>機能:</strong> 高精度検知、カスタマイズ対応</p>
+                            <p><strong>価格:</strong> 月額 $150,000</p>
+                            <ul style="margin-top: 1rem;">
+                                <li>✅ 全スタンダード機能</li>
+                                <li>✅ カスタムモデル</li>
+                                <li>✅ 24/7サポート</li>
+                                <li>✅ 専任CSM</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="card business-value">
+                            <h3><span class="card-icon">🥇</span>エンタープライズプラン</h3>
+                            <p><strong>対象:</strong> 無制限取引量</p>
+                            <p><strong>機能:</strong> フルカスタマイズ、オンサイト支援</p>
+                            <p><strong>価格:</strong> 要相談（年額$2M〜）</p>
+                            <ul style="margin-top: 1rem;">
+                                <li>✅ 全プロ機能</li>
+                                <li>✅ 専用環境構築</li>
+                                <li>✅ オンサイト常駐</li>
+                                <li>✅ SLA保証</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">🎯</span>
+                        導入ステップ & サポート
+                    </h2>
+                    
+                    <div class="step-by-step">
+                        <div class="step">
+                            <h3>Step 1: 要件ヒアリング (1週間)</h3>
+                            <p><strong>内容:</strong> 現状システム調査、業務要件整理、カスタマイズ範囲確定</p>
+                            <p><strong>成果物:</strong> 要件定義書、システム構成案、見積書</p>
+                            <p><strong>担当:</strong> セールスエンジニア + ソリューションアーキテクト</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h3>Step 2: PoC実施 (4週間)</h3>
+                            <p><strong>内容:</strong> 実データでの検証、精度測定、性能確認</p>
+                            <p><strong>成果物:</strong> PoC結果レポート、ROI試算、本格導入計画</p>
+                            <p><strong>費用:</strong> 無償提供（条件：本格契約前提）</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h3>Step 3: 本格導入 (3-6ヶ月)</h3>
+                            <p><strong>内容:</strong> システム構築、データ移行、運用開始</p>
+                            <p><strong>成果物:</strong> 本番システム、運用マニュアル、研修資料</p>
+                            <p><strong>サポート:</strong> 専任PMによる進捗管理</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h3>Step 4: 運用サポート (継続)</h3>
+                            <p><strong>内容:</strong> 24/7監視、定期チューニング、機能追加</p>
+                            <p><strong>成果物:</strong> 月次レポート、改善提案、新機能案内</p>
+                            <p><strong>SLA:</strong> 99.9%稼働保証、4時間以内障害対応</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="interactive-demo">
+                    <h3>📞 次のアクション</h3>
+                    <p>お客様の状況に合わせた詳細提案を作成いたします：</p>
+                    <button class="demo-button" onclick="showContactInfo()">無料相談を申し込む</button>
+                    <button class="demo-button" onclick="showDemoRequest()">デモを依頼する</button>
+                    <button class="demo-button" onclick="showROICalculator()">ROI試算を依頼する</button>
+                    <div id="contactInfo" style="display: none; margin-top: 2rem; text-align: left;">
+                        <h4>🤝 お問い合わせ方法：</h4>
+                        <ul style="font-size: 1.1rem; line-height: 2;">
+                            <li>📧 <strong>メール:</strong> sales@fraud-guard.com</li>
+                            <li>📞 <strong>電話:</strong> 0120-XXX-XXX (平日9-18時)</li>
+                            <li>💻 <strong>Web:</strong> 専用フォームで24時間受付</li>
+                            <li>🏢 <strong>訪問:</strong> 御社での詳細説明も可能</li>
+                            <li>⏰ <strong>対応時間:</strong> 初回相談は48時間以内に回答</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // タブ切り替え機能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // すべてのタブからactiveクラスを削除
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // クリックされたタブにactiveクラスを追加
+                    btn.classList.add('active');
+                    const targetId = btn.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
+        
+        // インタラクティブ機能
+        function showLearningPath() {
+            const element = document.getElementById('learningPath');
+            element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function showTechDocs() {
+            const element = document.getElementById('techDocs');
+            element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function showRiskMatrix() {
+            alert('🔍 リスク分析レポートを別ウィンドウで開きます...\n\n実際の実装では詳細なリスクマトリクスPDFが表示されます。');
+        }
+        
+        function showContactInfo() {
+            const element = document.getElementById('contactInfo');
+            element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function showDemoRequest() {
+            alert('🖥️ デモ申込みフォームを開きます...\n\n・ライブデモ（30分）\n・カスタムデモ（60分）\n・PoC提案（要相談）\n\nご希望をお聞かせください！');
+        }
+        
+        function showROICalculator() {
+            alert('💰 ROI計算ツールを起動します...\n\n現在の不正損失額、取引量、運用コストを入力いただくと、\n導入効果を具体的に試算いたします。\n\n営業担当が詳細をご説明します！');
+        }
+        
+        // アニメーション効果
+        document.addEventListener('scroll', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (cardTop < windowHeight * 0.8) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
+        
+        // カードの初期化
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.style.opacity = '0.8';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+        });
+    </script>
+</body>
+</html>
+                       <div class="card beginner-friendly">
+                            <h3><span class="card-icon">📡</span>Azure Event Hubs</h3>
+                            <p><strong>役割:</strong> 大量のデータを受け取る「入口」</p>
+                            <p><strong>例え:</strong> 郵便局の仕分けセンターのようなもの。毎秒数万通の手紙（取引データ）を受け取って、適切に分類します。</p>
+                            <p><strong>学習ポイント:</strong> Apache Kafkaの仕組みを理解すると、なぜEvent Hubsが選ばれたかわかります。</p>
+                        </div>
+                        
+                        <div class="card beginner-friendly">
+                            <h3><span class="card-icon">⚡</span>Azure Stream Analytics</h3>
+                            <p><strong>役割:</strong> リアルタイムでデータを処理</p>
+                            <p><strong>例え:</strong> 流れるベルトコンベアの上で不良品を見つける検査員。データが流れてくる中で、SQLのようなクエリで条件をチェックします。</p>
+                            <p><strong>学習ポイント:</strong> SQLが書ければ、Stream Analyticsのクエリも理解できます！</p>
+                        </div>
+                        
+                        <div class="card beginner-friendly">
+                            <h3><span class="card-icon">🧠</span>機械学習モデル</h3>
+                            <p><strong>役割:</strong> 過去のデータから学習し、不正を予測</p>
+                            <p><strong>例え:</strong> 経験豊富な銀行員が「この取引は怪しい」と直感で感じるのを、コンピュータで再現したもの。</p>
+                            <p><strong>学習ポイント:</strong> TensorFlowやPyTorchを学ぶと、AIがどう動作するか理解できます。</p>
+                        </div>
+                        
+                        <div class="card beginner-friendly">
+                            <h3><span class="card-icon">🏗️</span>Azure Kubernetes Service</h3>
+                            <p><strong>役割:</strong> AIモデルを動かすコンテナ環境</p>
+                            <p><strong>例え:</strong> 大きな工場の中に、用途別の小さな工房（コンテナ）がたくさんあるイメージ。必要に応じて工房を増やしたり減らしたりできます。</p>
+                            <p><strong>学習ポイント:</strong> Dockerとk8sの基本を学ぶと、現代的なアプリケーション開発が理解できます。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">📈</span>
+                        ステップバイステップで理解
+                    </h2>
+                    <div class="step-by-step">
+                        <div class="step">
+                            <h3>データの流れを追ってみよう</h3>
+                            <p>クレジットカードで商品を購入すると、その情報（金額、店舗、時刻など）がEvent Hubsに送られます。まるで川の流れのように、データが絶え間なく流れてきます。</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h3>リアルタイム処理の仕組み</h3>
+                            <p>Stream Analyticsは流れてくるデータに対して「過去1時間で同じカードが5回以上使われた？」「普段と違う地域での利用？」といった条件をチェックします。</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h3>AIによる高度な判定</h3>
+                            <p>単純なルールでは判断できない複雑なパターンを、機械学習モデルが分析します。「この人の普段の買い物パターンと比べて異常か？」を判定します。</p>
+                        </div>
+                        
+                        <div class="step">
+                            <h3>結果の通知と対応</h3>
+                            <p>不正の可能性が高いと判定された取引は、即座に銀行のシステムに通知され、取引の一時停止や顧客への確認が行われます。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="interactive-demo">
+                    <h3>💡 学習のヒント</h3>
+                    <p>このシステムを理解するには、以下の技術を順番に学習することをおすすめします：</p>
+                    <button class="demo-button" onclick="showLearningPath()">学習ロードマップを表示</button>
+                    <div id="learningPath" style="display: none; margin-top: 2rem; text-align: left;">
+                        <ol style="font-size: 1.1rem; line-height: 2;">
+                            <li><strong>基礎:</strong> SQL、Python、Git</li>
+                            <li><strong>クラウド:</strong> Azure基礎、CLI操作</li>
+                            <li><strong>データ:</strong> Apache Kafka、Stream Processing</li>
+                            <li><strong>コンテナ:</strong> Docker、Kubernetes</li>
+                            <li><strong>AI/ML:</strong> TensorFlow、PyTorch</li>
+                            <li><strong>実践:</strong> プロジェクト開発、CI/CD</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTO向けコンテンツ -->
+            <div class="tab-content" id="cto">
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">🎯</span>
+                        技術的意思決定ポイント
+                    </h2>
+                    
+                    <div class="decision-matrix">
+                        <div class="matrix-header">技術選定要因</div>
+                        <div class="matrix-header">重要度</div>
+                        <div class="matrix-header">リスク</div>
+                        <div class="matrix-header">代替案</div>
+                        
+                        <div class="matrix-cell">Event Hubs vs Apache Kafka</div>
+                        <div class="matrix-cell">⭐⭐⭐⭐⭐</div>
+                        <div class="matrix-cell">Low</div>
+                        <div class="matrix-cell">Confluent Cloud</div>
+                        
+                        <div class="matrix-cell">AKS vs Azure Container Instances</div>
+                        <div class="matrix-cell">⭐⭐⭐⭐</div>
+                        <div class="matrix-cell">Medium</div>
+                        <div class="matrix-cell">AWS EKS, GKE</div>
+                        
+                        <div class="matrix-cell">Cosmos DB vs SQL Database</div>
+                        <div class="matrix-cell">⭐⭐⭐⭐⭐</div>
+                        <div class="matrix-cell">Low</div>
+                        <div class="matrix-cell">MongoDB Atlas</div>
+                        
+                        <div class="matrix-cell">ExpressRoute vs VPN Gateway</div>
+                        <div class="matrix-cell">⭐⭐⭐</div>
+                        <div class="matrix-cell">Low</div>
+                        <div class="matrix-cell">AWS Direct Connect</div>
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <h2 class="section-title">
+                        <span class="tab-icon">⚙️</span>
+                        アーキテクチャ選択理由
+                    </h2>
+                    <div class="cards-grid">
+                        <div class="card technical-deep">
+                            <h3><span class="card-icon">🚀</span>パフォーマンス要件</h3>
+                            <p><strong>目標:</strong> 100ms未満のレイテンシ</p>
+                            <p><strong>選択:</strong> Event Hubs + Stream Analytics + AKS GPU</p>
+                            <p><strong>根拠:</strong> Kafkaプロトコルによる高スループット、インメモリ処理、GPU並列計算の組み合わせで目標達成</p>
+                            <div class="metric-dashboard">
+                                <div class="metric-card">
+                                    <div class="metric-value">99.9%</div>
+                                    <div class="metric-label">可用性SLA</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value">50ms</div>
+                                    <div class="metric-label">平均レイテンシ</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card technical-deep">
+                            <h3><span class="card-icon">🔒</span>セキュリティ・コンプライアンス</h3>
+                            <p><strong>要件:</strong> FINRA、PCI DSS準拠</p>
+                            <p><strong>選択:</strong> Key Vault + Sentinel + Private Link</p>
+                            <p><strong>根拠:</strong> ゼロトラスト原則、暗号化in-transit/at-rest、監査ログ完全性保証</p>
+                            <ul style="margin-top: 1rem;">
+                                <li>✅ AES-256暗号化 (FIPS 140-2 Level 2)</li>
+                                <li>✅ RBAC + PIM特権管理</li>
+                                <li>✅ 監査ログ7年保持</li>
+                                <li>✅ 脆弱性スキャン自動化</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="card technical-deep">
+                            <h3><span class="card-icon">💰</span>コスト最適化戦略</h3>
+                            <p><strong>目標:</strong> 3年間で40%コスト削減</p>
+                            <p><strong>戦略:</strong> Reserved Instances + Spot + Auto-scaling</p>
+                            <div class="metric-dashboard">
+                                <div class="metric-card">
+                                    <div class="metric-value">72%</div>
+                                    <div class="metric-label">RI割引率</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-value">90%</div>
+                                    <div class="metric-label">Spot削減率</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="car

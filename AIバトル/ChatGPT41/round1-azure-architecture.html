@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Azure金融不正検知アーキテクチャ設計</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f5f7fa; }
+    .slide { 
+      display: none; padding: 60px 80px; height: 100vh; box-sizing: border-box;
+      background: white; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      margin: 40px auto; max-width: 1080px; 
+    }
+    .slide.active { display: block; }
+    h1, h2 { color: #2a3356; }
+    h1 { font-size: 2.2em; }
+    h2 { font-size: 1.5em; margin-top: 0.7em; }
+    ul { font-size: 1.15em; }
+    .nav { text-align: center; margin-top: 24px; }
+    .nav button { margin: 0 8px; padding: 8px 20px; border: none; border-radius: 8px; background: #667eea; color: white; font-size: 1em; cursor: pointer; }
+    .nav button[disabled] { background: #aab; cursor: default;}
+    .svg-wrap { text-align: center; margin-top: 32px; }
+  </style>
+</head>
+<body>
+
+<section class="slide active" id="slide1">
+  <h1>Azure金融不正検知システム設計</h1>
+  <h2>課題・要件</h2>
+  <ul>
+    <li>金融機関向けリアルタイム不正検知システム</li>
+    <li>ハイブリッドクラウド（オンプレ＋Azure）</li>
+    <li>マルチリージョン災害対策（冗長化）</li>
+    <li>機械学習パイプラインの導入</li>
+    <li>FINRA準拠（金融コンプライアンス）</li>
+    <li>コスト最適化（ROI最大化）</li>
+  </ul>
+  <div class="nav">
+    <button disabled>1</button>
+    <button onclick="showSlide(2)">2</button>
+    <button onclick="showSlide(3)">3</button>
+    <button onclick="showSlide(4)">4</button>
+    <button onclick="showSlide(5)">5</button>
+  </div>
+</section>
+
+<section class="slide" id="slide2">
+  <h1>ハイブリッド構成・災害対策</h1>
+  <ul>
+    <li><b>Azure ExpressRoute</b>：オンプレ⇔Azure間の閉域網接続（金融要件、低遅延・高信頼）</li>
+    <li><b>Azure Arc</b>：オンプレ資産もAzureから一元管理（ハイブリッド運用）</li>
+    <li><b>マルチリージョン（例: 東日本＋西日本）</b>：Active-Active構成で災害時自動フェイルオーバー</li>
+    <li><b>Azure Traffic Manager</b>：地理的冗長性・自動ルーティング</li>
+    <li><b>理由</b>：システム全体の可用性・継続性確保。金融庁ガイドライン準拠</li>
+  </ul>
+  <div class="nav">
+    <button onclick="showSlide(1)">1</button>
+    <button disabled>2</button>
+    <button onclick="showSlide(3)">3</button>
+    <button onclick="showSlide(4)">4</button>
+    <button onclick="showSlide(5)">5</button>
+  </div>
+</section>
+
+<section class="slide" id="slide3">
+  <h1>リアルタイム処理・MLパイプライン</h1>
+  <ul>
+    <li><b>Azure Event Hubs</b>：トランザクションデータのストリーミング収集基盤</li>
+    <li><b>Azure Stream Analytics</b>：リアルタイムで不正兆候の初期検知・フィルタリング</li>
+    <li><b>Azure Databricks</b>：大規模データ分析とMLパイプライン構築（Sparkベース）</li>
+    <li><b>Azure Machine Learning</b>：モデル管理・CI/CD・デプロイ（MLOps対応）</li>
+    <li><b>Azure SQL/Managed Instance</b>：取引・不正判定履歴の蓄積、審査ワークフロー連携</li>
+    <li><b>理由</b>：スケーラブルなリアルタイム分析と機械学習運用の最適化</li>
+  </ul>
+  <div class="nav">
+    <button onclick="showSlide(1)">1</button>
+    <button onclick="showSlide(2)">2</button>
+    <button disabled>3</button>
+    <button onclick="showSlide(4)">4</button>
+    <button onclick="showSlide(5)">5</button>
+  </div>
+</section>
+
+<section class="slide" id="slide4">
+  <h1>コンプライアンス・コスト最適化</h1>
+  <ul>
+    <li><b>Azure Purview</b>：データガバナンス・監査証跡（FINRA対応、データ分類・マスキング）</li>
+    <li><b>Azure Key Vault</b>：暗号鍵・証明書の厳格管理（FIPS準拠）</li>
+    <li><b>Azure Policy & Defender</b>：設定準拠・脆弱性監査（FINRA要件対応）</li>
+    <li><b>コスト最適化</b>：Reserved VM、Auto Scale、Spot VM、Azure Cost Management活用</li>
+    <li><b>理由</b>：コンプライアンス違反リスク最小化＆コスト効率最大化</li>
+  </ul>
+  <div class="nav">
+    <button onclick="showSlide(1)">1</button>
+    <button onclick="showSlide(2)">2</button>
+    <button onclick="showSlide(3)">3</button>
+    <button disabled>4</button>
+    <button onclick="showSlide(5)">5</button>
+  </div>
+</section>
+
+<section class="slide" id="slide5">
+  <h1>全体アーキテクチャ図</h1>
+  <div class="svg-wrap">
+    <!-- SVGアーキテクチャ図埋め込み -->
+    <svg width="900" height="580" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg1" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stop-color="#e0ecfc"/>
+          <stop offset="100%" stop-color="#c1d3fe"/>
+        </linearGradient>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#222" flood-opacity="0.15"/>
+        </filter>
+      </defs>
+      <!-- オンプレ -->
+      <rect x="40" y="80" width="120" height="100" rx="14" fill="#f5d0c5" filter="url(#shadow)"/>
+      <text x="60" y="110" font-size="18" font-family="Segoe UI" fill="#69453a">On-Premises</text>
+      <rect x="60" y="130" width="80" height="35" rx="8" fill="#f8fafc" stroke="#b48a78" stroke-width="2"/>
+      <text x="73" y="154" font-size="14" font-family="Segoe UI" fill="#69453a">金融DB</text>
+
+      <!-- ExpressRoute -->
+      <rect x="180" y="115" width="100" height="35" rx="8" fill="#dbdbfc" stroke="#8585ee" stroke-width="2"/>
+      <text x="200" y="138" font-size="14" font-family="Segoe UI" fill="#3a3a79">ExpressRoute</text>
+
+      <!-- Azureクラウド枠 -->
+      <rect x="310" y="40" width="550" height="500" rx="30" fill="url(#bg1)" stroke="#6186c6" stroke-width="4"/>
+      <text x="350" y="75" font-size="22" font-family="Segoe UI" fill="#35518e">Azure (東日本/西日本)</text>
+      <!-- Event Hubs -->
+      <rect x="340" y="110" width="90" height="35" rx="8" fill="#e5e9fc" stroke="#4e5cbf" stroke-width="2"/>
+      <text x="349" y="133" font-size="14" font-family="Segoe UI" fill="#28336a">Event Hubs</text>
+      <!-- Stream Analytics -->
+      <rect x="340" y="180" width="110" height="35" rx="8" fill="#e6f0fa" stroke="#22a1cf" stroke-width="2"/>
+      <text x="347" y="204" font-size="14" font-family="Segoe UI" fill="#17728d">Stream Analytics</text>
+      <!-- Databricks -->
+      <rect x="480" y="180" width="110" height="35" rx="8" fill="#f2eafd" stroke="#9e43b7" stroke-width="2"/>
+      <text x="487" y="204" font-size="14" font-family="Segoe UI" fill="#772d8d">Databricks</text>
+      <!-- Azure ML -->
+      <rect x="480" y="110" width="110" height="35" rx="8" fill="#e7f4e7" stroke="#4cad6a" stroke-width="2"/>
+      <text x="489" y="133" font-size="14" font-family="Segoe UI" fill="#2d8057">Azure ML</text>
+      <!-- SQL Database -->
+      <rect x="630" y="110" width="110" height="35" rx="8" fill="#f6f8fa" stroke="#4976b1" stroke-width="2"/>
+      <text x="638" y="133" font-size="14" font-family="Segoe UI" fill="#35518e">SQL/MI</text>
+      <!-- Purview -->
+      <rect x="630" y="180" width="110" height="35" rx="8" fill="#f4eee8" stroke="#dcb486" stroke-width="2"/>
+      <text x="638" y="204" font-size="14" font-family="Segoe UI" fill="#a77b33">Purview</text>
+      <!-- Key Vault -->
+      <rect x="630" y="250" width="110" height="35" rx="8" fill="#e0f7fa" stroke="#2ec8c6" stroke-width="2"/>
+      <text x="638" y="274" font-size="14" font-family="Segoe UI" fill="#17728d">Key Vault</text>
+      <!-- Policy/Defender -->
+      <rect x="480" y="250" width="110" height="35" rx="8" fill="#f7e9e8" stroke="#d06767" stroke-width="2"/>
+      <text x="488" y="274" font-size="14" font-family="Segoe UI" fill="#b62d2d">Policy/Defender</text>
+      <!-- Traffic Manager -->
+      <rect x="340" y="250" width="110" height="35" rx="8" fill="#f9faf2" stroke="#c2c876" stroke-width="2"/>
+      <text x="347" y="274" font-size="14" font-family="Segoe UI" fill="#888d33">Traffic Manager</text>
+      <!-- Arc -->
+      <rect x="340" y="320" width="90" height="35" rx="8" fill="#f6e8fa" stroke="#b567d9" stroke-width="2"/>
+      <text x="349" y="344" font-size="14" font-family="Segoe UI" fill="#823d9b">Azure Arc</text>
+      <!-- Cost Mgmt -->
+      <rect x="480" y="320" width="110" height="35" rx="8" fill="#e6faf6" stroke="#37d89c" stroke-width="2"/>
+      <text x="487" y="344" font-size="14" font-family="Segoe UI" fill="#208064">Cost Mgmt</text>
+      <!-- コネクション線（例） -->
+      <polyline points="160,150 180,132 340,128" fill="none" stroke="#7c7c7c" stroke-width="2" marker-end="url(#arrow)"/>
+      <polyline points="430,128 480,128" fill="none" stroke="#7c7c7c" stroke-width="2"/>
+      <polyline points="590,128 630,128" fill="none" stroke="#7c7c7c" stroke-width="2"/>
+      <polyline points="385,145 385,180" fill="none" stroke="#7c7c7c" stroke-width="2"/>
+      <polyline points="535,145 535,180" fill="none" stroke="#7c7c7c" stroke-width="2"/>
+      <polyline points="395,215 535,215" fill="none" stroke="#7c7c7c" stroke-width="2"/>
+      <polyline points="535,215 535,250" fill="none" stroke="#7c7c7c" stroke-width="2"/>
+      <polyline points="395,215 395,250" fill="none" stroke="#7c7c7c" stroke-width="2"/>
+      <polyline points="685,128 685,180" fill="none" stroke="#7c7c7c" stroke-width="2"/>
+      <polyline points="685,215 685,250" fill="none" stroke="#7c7c7c" stroke-width="2"/>
+      <polyline points="340,128 340,320" fill="none" stroke="#7c7c7c" stroke-width="2" stroke-dasharray="4"/>
+      <polyline points="685,128 685,320" fill="none" stroke="#7c7c7c" stroke-width="2" stroke-dasharray="4"/>
+      <!-- Arrow Head -->
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#7c7c7c"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+  <div class="nav">
+    <button onclick="showSlide(1)">1</button>
+    <button onclick="showSlide(2)">2</button>
+    <button onclick="showSlide(3)">3</button>
+    <button onclick="showSlide(4)">4</button>
+    <button disabled>5</button>
+  </div>
+</section>
+
+<script>
+  function showSlide(n) {
+    var slides = document.querySelectorAll('.slide');
+    slides.forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('slide'+n).classList.add('active');
+    window.scrollTo(0,0);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+theme: minima
+title: "AI Battle: ChatGPT vs Claude"
+description: "ChatGPT 4.1とClaude Sonnet 4のスライド作成能力を徹底比較。3つのラウンドでAIの実力を検証した結果を公開。"
+author: "Daichi Matsumoto"
+baseurl: ""
+url: "https://DaichiMatsumoto.github.io"
+
+# GitHub Pages settings
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# SEO settings
+lang: ja
+twitter:
+  username: DaichiMatsumoto
+  card: summary_large_image
+
+# Social links
+github_username: DaichiMatsumoto
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Exclude files
+exclude:
+  - .git/
+  - .gitignore
+  - README.md

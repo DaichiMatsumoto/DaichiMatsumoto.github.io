@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT vs Claude - AIスライド作成バトル結果</title>
+    <meta name="description" content="ChatGPT 4.1とClaude Sonnet 4のスライド作成能力を徹底比較。3つのラウンドでAIの実力を検証した結果を公開。">
+    <meta name="keywords" content="ChatGPT, Claude, AI, スライド作成, Azure, アーキテクチャ, 技術プレゼン, 機械学習">
+    <meta name="author" content="Daichi Matsumoto">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://daichimatsumoto.github.io/AIバトル/">
+    <meta property="og:title" content="ChatGPT vs Claude - AIスライド作成バトル結果">
+    <meta property="og:description" content="ChatGPT 4.1とClaude Sonnet 4のスライド作成能力を徹底比較。3つのラウンドでAIの実力を検証した結果を公開。">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://daichimatsumoto.github.io/AIバトル/">
+    <meta property="twitter:title" content="ChatGPT vs Claude - AIスライド作成バトル結果">
+    <meta property="twitter:description" content="ChatGPT 4.1とClaude Sonnet 4のスライド作成能力を徹底比較。3つのラウンドでAIの実力を検証した結果を公開。">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzY2N0VFQSIvPgo8dGV4dCB4PSI1IiB5PSIyMiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPkFJPC90ZXh0Pgo8L3N2Zz4K">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffd700, #ffed4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .battle-overview {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .overview-title {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .challenge-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .challenge-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .challenge-card p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .competitors {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .competitor {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .competitor:hover {
+            transform: scale(1.02);
+        }
+
+        .competitor-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .chatgpt-logo {
+            background: linear-gradient(135deg, #10a37f 0%, #1a7f64 100%);
+        }
+
+        .claude-logo {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        }
+
+        .competitor h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .spec-list {
+            list-style: none;
+            text-align: left;
+        }
+
+        .spec-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .spec-list li:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .results-title {
+            font-size: 2.5rem;
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .round-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .round-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 1.5rem;
+            background: #f9fafb;
+            transition: all 0.3s ease;
+        }
+
+        .round-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .round-title {
+            font-size: 1.4rem;
+            color: #374151;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .comparison-table th {
+            background: #f3f4f6;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            margin: 3rem 0;
+        }
+
+        .download-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .download-item {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .download-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .download-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .download-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .conclusion {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .conclusion-title {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+
+        .conclusion-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .winner-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
+            color: #333;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 0 0.5rem;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .challenge-details {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .prompt-container {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 2rem;
+            border: 2px solid #e2e8f0;
+        }
+
+        .prompt-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .prompt-header h3 {
+            font-size: 1.8rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt-header p {
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .prompt-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .prompt-section {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .prompt-section h4 {
+            font-size: 1.3rem;
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .round-detail {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .round-detail h4 {
+            font-size: 1.4rem;
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-box {
+            background: #fffbeb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #fbbf24;
+        }
+
+        .challenge-box h5 {
+            font-size: 1.1rem;
+            color: #92400e;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .challenge-box ul,
+        .challenge-box ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-box li {
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .challenge-box p {
+            color: #374151;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .competitors {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="main-title">⚔️ AI BATTLE ⚔️</h1>
+            <p class="subtitle">ChatGPT vs Claude Sonnet 4 - スライド作成能力対決</p>
+            <p style="opacity: 0.8;">3つのラウンドで技術プレゼンテーション作成能力を徹底比較</p>
+        </header>
+
+        <div class="battle-overview">
+            <h2 class="overview-title">🎯 バトル概要</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #666; margin-bottom: 2rem;">
+                Azure上での金融機関向けリアルタイム不正検知システムを題材に、<br>
+                設計からビジネス化、技術伝達まで3つの観点でAIの実力を検証
+            </p>
+            
+            <div class="challenge-grid">
+                <div class="challenge-card">
+                    <h3>🏗️ ラウンド1：システム設計</h3>
+                    <p>超複合Azureアーキテクチャ設計 - ハイブリッドクラウド、マルチリージョン、機械学習パイプライン、FINRA準拠</p>
+                </div>
+                <div class="challenge-card">
+                    <h3>💰 ラウンド2：ビジネス化</h3>
+                    <p>技術資産価値最大化プラン - 特許戦略、OSS化、技術移転、資産評価モデル</p>
+                </div>
+                <div class="challenge-card">
+                    <h3>🎤 ラウンド3：伝達力</h3>
+                    <p>技術伝達力チャレンジ - 新卒、CTO、営業向けの3つの視点でインタラクティブ説明</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="challenge-details">
+            <h2 class="section-title">📋 詳細な課題内容</h2>
+            <p class="section-subtitle">両AIに与えられた正確なプロンプト</p>
+            
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <h3>💬 共通入力プロンプト</h3>
+                    <p>ChatGPT、Claude両方に全く同じ条件で与えられた課題</p>
+                </div>
+                
+                <div class="prompt-content">
+                    <div class="prompt-section">
+                        <h4>📝 基本指示</h4>
+                        <div class="code-block">次のテーマと出力形式に従い、スライドを作成してください。
+ラウンドは３ラウンドあり、一連の課題となっています。
+スライドはそれぞれHTML形式を基本とし、１ラウンドあたり１ファイルにまとめるようにしてください。
+複数スライド指定がある場合は、スライドの区切りを一つのHTMLファイル内で表現してください。</div>
+                    </div>
+
+                    <div class="round-detail">
+                        <h4>🏗️ ラウンド1：超複合Azureアーキテクチャ設計</h4>
+                        <div class="challenge-box">
+                            <h5>📋 お題</h5>
+                            <p>Azure上で「金融機関のリアルタイム不正検知システム」を設計せよ。要件：</p>
+                            <ul>
+                                <li>ハイブリッドクラウド構成</li>
+                                <li>マルチリージョン災対策</li>
+                                <li>機械学習パイプライン</li>
+                                <li>コンプライアンス要件（FINRA準拠）</li>
+                                <li>コスト最適化機構</li>
+                                <li>各コンポーネントの技術選定理由を明記</li>
+                            </ul>
+                            <h5>📤 出力形式</h5>
+                            <p><strong>HTMLスライド（5枚以内）＋ アーキテクチャ図（SVG埋込）</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="round-detail">
+                        <h4>💰 ラウンド2：技術資産価値最大化プラン</h4>
+                        <div class="challenge-box">
+                            <h5>📋 お題</h5>
+                            <p>提案したシステムの「技術的資産化」戦略を策定せよ：</p>
+                            <ol>
+                                <li>特許取得可能な独自コンポーネント</li>
+                                <li>OSS化によるエコシステム構築</li>
+                                <li>技術移転パッケージ設計</li>
+                                <li>資産評価モデル（数式提示）</li>
+                            </ol>
+                            <h5>📤 出力形式</h5>
+                            <p><strong>HTMLスライド（3枚）＋ ビジネスモデル図</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="round-detail">
+                        <h4>🎤 ラウンド3：技術伝達力チャレンジ</h4>
+                        <div class="challenge-box">
+                            <h5>📋 お題</h5>
+                            <p>ラウンド1の設計を：</p>
+                            <ul>
+                                <li><strong>新卒エンジニア向け</strong>（基本重視）</li>
+                                <li><strong>CTO向け</strong>（意思決定ポイント）</li>
+                                <li><strong>営業向け</strong>（ビジネス価値）</li>
+                            </ul>
+                            <p>の3観点で説明せよ</p>
+                            <h5>📤 出力形式</h5>
+                            <p><strong>インタラクティブHTML（タブ切替UI実装）</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="competitors">
+            <div class="competitor">
+                <div class="competitor-logo chatgpt-logo">GPT</div>
+                <h3>ChatGPT-4.1</h3>
+                <ul class="spec-list">
+                    <li><span class="spec-label">モデル</span><span>GPT-4 Turbo</span></li>
+                    <li><span class="spec-label">開発元</span><span>OpenAI</span></li>
+                    <li><span class="spec-label">特徴</span><span>汎用性重視</span></li>
+                    <li><span class="spec-label">強み</span><span>長文生成、一貫性</span></li>
+                </ul>
+            </div>
+            <div class="competitor">
+                <div class="competitor-logo claude-logo">C</div>
+                <h3>Claude Sonnet 4</h3>
+                <ul class="spec-list">
+                    <li><span class="spec-label">モデル</span><span>Claude Sonnet 4</span></li>
+                    <li><span class="spec-label">開発元</span><span>Anthropic</span></li>
+                    <li><span class="spec-label">特徴</span><span>アーティファクト対応</span></li>
+                    <li><span class="spec-label">強み</span><span>動的コンテンツ、UI作成</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <h2 class="results-title">📊 バトル結果</h2>
+            
+            <div class="round-results">
+                <div class="round-card">
+                    <h3 class="round-title">🏗️ ラウンド1：システム設計</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>評価項目</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                        </tr>
+                        <tr>
+                            <td>ファイルサイズ</td>
+                            <td>10.7KB</td>
+                            <td>21.9KB</td>
+                        </tr>
+                        <tr>
+                            <td>視覚的インパクト</td>
+                            <td>⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>技術的詳細</td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>アーキテクチャ図</td>
+                            <td>基本的なSVG</td>
+                            <td>詳細なSVG図</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 1rem; font-weight: 600; color: #f7931e;">勝者: <span class="winner-badge">Claude</span></p>
+                </div>
+
+                <div class="round-card">
+                    <h3 class="round-title">💰 ラウンド2：ビジネス化</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>評価項目</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                        </tr>
+                        <tr>
+                            <td>戦略的思考</td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>数式・モデル</td>
+                            <td>⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>実用性</td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>プレゼン力</td>
+                            <td>⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 1rem; font-weight: 600; color: #f7931e;">勝者: <span class="winner-badge">Claude</span></p>
+                </div>
+
+                <div class="round-card">
+                    <h3 class="round-title">🎤 ラウンド3：伝達力</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>評価項目</th>
+                            <th>ChatGPT</th>
+                            <th>Claude</th>
+                        </tr>
+                        <tr>
+                            <td>UI/UX設計</td>
+                            <td>⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>インタラクション</td>
+                            <td>⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>対象別説明</td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                        <tr>
+                            <td>技術伝達力</td>
+                            <td>⭐⭐⭐⭐</td>
+                            <td>⭐⭐⭐⭐⭐</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 1rem; font-weight: 600; color: #f7931e;">勝者: <span class="winner-badge">Claude</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <h2 class="download-title">📥 実際のスライドを比較する</h2>
+            <p>両AIが作成した実際のスライドをダウンロードして比較できます</p>
+            
+            <div class="download-grid">
+                <div class="download-item">
+                    <h4>🏗️ ラウンド1：システム設計</h4>
+                    <p>Azureアーキテクチャ設計スライド</p>
+                    <div class="download-links">
+                        <a href="ChatGPT41/round1-azure-architecture.html" class="download-btn">ChatGPT版</a>
+                        <a href="Claude Sonnet4/round1-azure-architecture.html" class="download-btn">Claude版</a>
+                    </div>
+                </div>
+                
+                <div class="download-item">
+                    <h4>💰 ラウンド2：ビジネス化</h4>
+                    <p>技術資産価値最大化プラン</p>
+                    <div class="download-links">
+                        <a href="ChatGPT41/round2-business-plan.html" class="download-btn">ChatGPT版</a>
+                        <a href="Claude Sonnet4/round2-business-plan.html" class="download-btn">Claude版</a>
+                    </div>
+                </div>
+                
+                <div class="download-item">
+                    <h4>🎤 ラウンド3：伝達力</h4>
+                    <p>技術伝達力チャレンジ</p>
+                    <div class="download-links">
+                        <a href="ChatGPT41/round3-communication.html" class="download-btn">ChatGPT版</a>
+                        <a href="Claude Sonnet4/round3-communication.html" class="download-btn">Claude版</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="conclusion">
+            <h2 class="conclusion-title">🏆 総合結果</h2>
+            <div class="conclusion-text">
+                <p><strong>3戦全勝で<span class="winner-badge">Claude Sonnet 4</span>の圧勝！</strong></p>
+                <br>
+                <p>特に<strong>視覚的インパクト</strong>、<strong>インタラクティブ要素</strong>、<strong>詳細なアーキテクチャ図</strong>においてClaudeが大きく優位に。アーティファクト機能により、動的で魅力的なプレゼンテーションを作成する能力が圧倒的でした。</p>
+                <br>
+                <p>一方、ChatGPTは<strong>技術的な論理性</strong>や<strong>構造化された説明</strong>において安定した品質を示し、基本的なスライド作成能力は十分に実用レベルにあることが確認されました。</p>
+                <br>
+                <p style="font-style: italic; color: #667eea;">
+                「スライド作成においては、視覚的魅力とインタラクション性が重要 - Claudeの完勝」
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

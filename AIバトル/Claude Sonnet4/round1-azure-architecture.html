@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure金融機関リアルタイム不正検知システム</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .slide {
+            min-height: 100vh;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            page-break-after: always;
+        }
+        
+        .slide:nth-child(even) {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+        
+        .slide h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .slide h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #ffd700;
+            border-bottom: 3px solid #ffd700;
+            padding-bottom: 0.5rem;
+        }
+        
+        .slide h3 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: #87ceeb;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .requirement-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #ffd700;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        
+        .requirement-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .architecture-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .tech-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-card:hover {
+            border-color: #ffd700;
+            transform: scale(1.02);
+        }
+        
+        .tech-card h4 {
+            color: #ffd700;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tech-card .service {
+            color: #87ceeb;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cost-optimization {
+            background: linear-gradient(45deg, #10b981, #059669);
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .compliance-box {
+            background: linear-gradient(45deg, #dc2626, #b91c1c);
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        li {
+            padding: 0.5rem 0;
+            border-left: 3px solid #ffd700;
+            padding-left: 1rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .highlight {
+            color: #ffd700;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 20px;
+            }
+            
+            .slide h1 {
+                font-size: 2.5rem;
+            }
+            
+            .slide h2 {
+                font-size: 2rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- スライド1: タイトル -->
+    <div class="slide">
+        <h1>🏦 Azure金融機関向け<br>リアルタイム不正検知システム</h1>
+        <div style="text-align: center; margin-top: 3rem;">
+            <h3>超複合アーキテクチャ設計</h3>
+            <p style="font-size: 1.2rem; margin-top: 2rem; opacity: 0.9;">
+                ハイブリッドクラウド × マルチリージョン × 機械学習<br>
+                FINRA準拠 × コスト最適化
+            </p>
+        </div>
+        <div class="slide-number">1/5</div>
+    </div>
+    
+    <!-- スライド2: システム要件 -->
+    <div class="slide">
+        <h2>📋 システム要件</h2>
+        <div class="content-grid">
+            <div class="requirement-card">
+                <h3>🔄 ハイブリッドクラウド構成</h3>
+                <ul>
+                    <li>オンプレミス既存システムとの連携</li>
+                    <li>Azure Arc による統合管理</li>
+                    <li>データ主権とレイテンシ最適化</li>
+                </ul>
+            </div>
+            <div class="requirement-card">
+                <h3>🌐 マルチリージョン災害対策</h3>
+                <ul>
+                    <li>East US 2 (プライマリ)</li>
+                    <li>West US 2 (セカンダリ)</li>
+                    <li>RPO: 1分未満、RTO: 5分未満</li>
+                </ul>
+            </div>
+            <div class="requirement-card">
+                <h3>🤖 機械学習パイプライン</h3>
+                <ul>
+                    <li>リアルタイム推論 (<100ms)</li>
+                    <li>バッチ学習とオンライン学習</li>
+                    <li>MLOps による継続的改善</li>
+                </ul>
+            </div>
+            <div class="requirement-card">
+                <h3>⚖️ FINRA準拠</h3>
+                <ul>
+                    <li>データ暗号化 (保存時・転送時)</li>
+                    <li>監査ログ (7年間保持)</li>
+                    <li>アクセス制御 (RBAC + ABAC)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">2/5</div>
+    </div>
+    
+    <!-- スライド3: アーキテクチャ図 -->
+    <div class="slide">
+        <h2>🏗️ システムアーキテクチャ</h2>
+        <div class="architecture-container">
+            <svg width="100%" height="600" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+                <!-- 背景グリッド -->
+                <defs>
+                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                    </pattern>
+                    <linearGradient id="azureGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#0078d4;stop-opacity:0.8" />
+                        <stop offset="100%" style="stop-color:#106ebe;stop-opacity:0.8" />
+                    </linearGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+                
+                <!-- オンプレミス環境 -->
+                <rect x="50" y="50" width="200" height="150" fill="rgba(255,69,0,0.3)" stroke="#ff4500" stroke-width="2" rx="10"/>
+                <text x="150" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">オンプレミス環境</text>
+                <rect x="70" y="90" width="160" height="30" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="150" y="110" text-anchor="middle" fill="white" font-size="12">既存基幹システム</text>
+                <rect x="70" y="130" width="160" height="30" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="150" y="150" text-anchor="middle" fill="white" font-size="12">Azure Arc Agent</text>
+                
+                <!-- データ取り込み層 -->
+                <rect x="300" y="50" width="180" height="100" fill="url(#azureGradient)" stroke="#0078d4" stroke-width="2" rx="10"/>
+                <text x="390" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">データ取り込み</text>
+                <rect x="320" y="90" width="140" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="390" y="107" text-anchor="middle" fill="white" font-size="11">Event Hubs</text>
+                <rect x="320" y="120" width="140" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="390" y="137" text-anchor="middle" fill="white" font-size="11">API Management</text>
+                
+                <!-- リアルタイム処理層 -->
+                <rect x="520" y="50" width="180" height="150" fill="rgba(34,139,34,0.3)" stroke="#228b22" stroke-width="2" rx="10"/>
+                <text x="610" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">リアルタイム処理</text>
+                <rect x="540" y="90" width="140" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="610" y="107" text-anchor="middle" fill="white" font-size="11">Stream Analytics</text>
+                <rect x="540" y="120" width="140" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="610" y="137" text-anchor="middle" fill="white" font-size="11">Function Apps</text>
+                <rect x="540" y="150" width="140" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="610" y="167" text-anchor="middle" fill="white" font-size="11">Cosmos DB</text>
+                
+                <!-- ML推論層 -->
+                <rect x="750" y="50" width="180" height="150" fill="rgba(138,43,226,0.3)" stroke="#8a2be2" stroke-width="2" rx="10"/>
+                <text x="840" y="80" text-anchor="middle" fill="white" font-size="14" font-weight="bold">ML推論エンジン</text>
+                <rect x="770" y="90" width="140" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="840" y="107" text-anchor="middle" fill="white" font-size="11">ML Studio</text>
+                <rect x="770" y="120" width="140" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="840" y="137" text-anchor="middle" fill="white" font-size="11">AKS (GPU)</text>
+                <rect x="770" y="150" width="140" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="840" y="167" text-anchor="middle" fill="white" font-size="11">Cognitive Service</text>
+                
+                <!-- データストレージ層 -->
+                <rect x="300" y="250" width="400" height="100" fill="rgba(70,130,180,0.3)" stroke="#4682b4" stroke-width="2" rx="10"/>
+                <text x="500" y="280" text-anchor="middle" fill="white" font-size="14" font-weight="bold">データストレージ層</text>
+                <rect x="320" y="290" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="380" y="307" text-anchor="middle" fill="white" font-size="11">Data Lake Gen2</text>
+                <rect x="450" y="290" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="510" y="307" text-anchor="middle" fill="white" font-size="11">SQL Database</text>
+                <rect x="580" y="290" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="640" y="307" text-anchor="middle" fill="white" font-size="11">Synapse Analytics</text>
+                
+                <!-- セキュリティ・コンプライアンス層 -->
+                <rect x="50" y="400" width="880" height="80" fill="rgba(220,20,60,0.3)" stroke="#dc143c" stroke-width="2" rx="10"/>
+                <text x="490" y="430" text-anchor="middle" fill="white" font-size="14" font-weight="bold">セキュリティ・コンプライアンス層</text>
+                <rect x="70" y="440" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="130" y="457" text-anchor="middle" fill="white" font-size="10">Key Vault</text>
+                <rect x="200" y="440" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="260" y="457" text-anchor="middle" fill="white" font-size="10">Sentinel</text>
+                <rect x="330" y="440" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="390" y="457" text-anchor="middle" fill="white" font-size="10">Defender</text>
+                <rect x="460" y="440" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="520" y="457" text-anchor="middle" fill="white" font-size="10">Purview</text>
+                <rect x="590" y="440" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="650" y="457" text-anchor="middle" fill="white" font-size="10">Policy</text>
+                <rect x="720" y="440" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="780" y="457" text-anchor="middle" fill="white" font-size="10">Monitor</text>
+                
+                <!-- 監視・運用層 -->
+                <rect x="50" y="500" width="880" height="80" fill="rgba(255,215,0,0.3)" stroke="#ffd700" stroke-width="2" rx="10"/>
+                <text x="490" y="530" text-anchor="middle" fill="white" font-size="14" font-weight="bold">監視・運用層</text>
+                <rect x="200" y="540" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="260" y="557" text-anchor="middle" fill="white" font-size="10">Application Insights</text>
+                <rect x="330" y="540" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="390" y="557" text-anchor="middle" fill="white" font-size="10">Log Analytics</text>
+                <rect x="460" y="540" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="520" y="557" text-anchor="middle" fill="white" font-size="10">DevOps</text>
+                <rect x="590" y="540" width="120" height="25" fill="rgba(255,255,255,0.2)" rx="5"/>
+                <text x="650" y="557" text-anchor="middle" fill="white" font-size="10">Automation</text>
+                
+                <!-- データフロー矢印 -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#ffd700" />
+                    </marker>
+                </defs>
+                
+                <!-- オンプレミス → データ取り込み -->
+                <line x1="250" y1="125" x2="300" y2="100" stroke="#ffd700" stroke-width="3" marker-end="url(#arrowhead)"/>
+                <text x="275" y="105" text-anchor="middle" fill="#ffd700" font-size="10">ExpressRoute</text>
+                
+                <!-- データ取り込み → リアルタイム処理 -->
+                <line x1="480" y1="100" x2="520" y2="100" stroke="#ffd700" stroke-width="3" marker-end="url(#arrowhead)"/>
+                
+                <!-- リアルタイム処理 → ML推論 -->
+                <line x1="700" y1="125" x2="750" y2="125" stroke="#ffd700" stroke-width="3" marker-end="url(#arrowhead)"/>
+                
+                <!-- リアルタイム処理 → データストレージ -->
+                <line x1="610" y1="200" x2="500" y2="250" stroke="#ffd700" stroke-width="3" marker-end="url(#arrowhead)"/>
+                
+                <!-- レージョン表示 -->
+                <text x="50" y="30" fill="#ffd700" font-size="16" font-weight="bold">Primary: East US 2</text>
+                <text x="750" y="30" fill="#87ceeb" font-size="16" font-weight="bold">Secondary: West US 2</text>
+            </svg>
+        </div>
+        <div class="slide-number">3/5</div>
+    </div>
+    
+    <!-- スライド4: 技術選定と理由 -->
+    <div class="slide">
+        <h2>⚙️ 技術選定と理由</h2>
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h4>データ取り込み</h4>
+                <div class="service">Azure Event Hubs</div>
+                <p><span class="highlight">理由:</span> 毎秒数万件のトランザクション処理、パーティション機能によるスケーラビリティ、Kafka互換性</p>
+            </div>
+            <div class="tech-card">
+                <h4>リアルタイム処理</h4>
+                <div class="service">Azure Stream Analytics</div>
+                <p><span class="highlight">理由:</span> SQLライクなクエリ、低レイテンシ（<100ms）、自動スケーリング、時系列データ処理最適化</p>
+            </div>
+            <div class="tech-card">
+                <h4>ML推論</h4>
+                <div class="service">AKS + GPU ノード</div>
+                <p><span class="highlight">理由:</span> TensorFlow/PyTorch最適化、水平スケーリング、カスタムモデル対応、低レイテンシ推論</p>
+            </div>
+            <div class="tech-card">
+                <h4>データストレージ</h4>
+                <div class="service">Cosmos DB + Data Lake</div>
+                <p><span class="highlight">理由:</span> グローバル分散、99.999%可用性、マルチモデル、ホットデータ高速アクセス</p>
+            </div>
+            <div class="tech-card">
+                <h4>セキュリティ</h4>
+                <div class="service">Key Vault + Sentinel</div>
+                <p><span class="highlight">理由:</span> FIPS 140-2 Level 2準拠、統合脅威検知、AI駆動セキュリティ分析</p>
+            </div>
+            <div class="tech-card">
+                <h4>ハイブリッド接続</h4>
+                <div class="service">ExpressRoute + Arc</div>
+                <p><span class="highlight">理由:</span> 専用線接続、一貫したガバナンス、オンプレミス統合管理</p>
+            </div>
+        </div>
+        <div class="slide-number">4/5</div>
+    </div>
+    
+    <!-- スライド5: コンプライアンス & コスト最適化 -->
+    <div class="slide">
+        <h2>💰 コンプライアンス & コスト最適化</h2>
+        
+        <div class="compliance-box">
+            <h3>⚖️ FINRA準拠対策</h3>
+            <ul>
+                <li><span class="highlight">データ暗号化:</span> AES-256 (保存時) + TLS 1.3 (転送時)</li>
+                <li><span class="highlight">監査ログ:</span> すべてのアクセス・変更をSentinelで7年間保持</li>
+                <li><span class="highlight">アクセス制御:</span> Azure AD + PIM による特権管理</li>
+                <li><span class="highlight">データ分類:</span> Purviewによる機密データ自動分類</li>
+                <li><span class="highlight">バックアップ:</span> geo冗長バックアップ (RPO: 1分)</li>
+            </ul>
+        </div>
+        
+        <div class="cost-optimization">
+            <h3>💡 コスト最適化戦略</h3>
+            <div class="content-grid">
+                <div>
+                    <h4>🔄 自動スケーリング</h4>
+                    <ul>
+                        <li>予約インスタンス活用 (最大72%削減)</li>
+                        <li>スポットインスタンス (ML学習用)</li>
+                        <li>KEDA による負荷ベーススケーリング</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>📊 データライフサイクル</h4>
+                    <ul>
+                        <li>ホット → クール → アーカイブ自動移行</li>
+                        <li>Cosmos DB autoscale (最大90%削減)</li>
+                        <li>不要データ自動削除ポリシー</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem; font-size: 1.2rem;">
+                <span class="highlight">想定月額コスト: $45,000 - $65,000</span><br>
+                <small>（トランザクション量: 500万件/日、ML推論: 100万回/日）</small>
+            </div>
+        </div>
+        
+        <div class="slide-number">5/5</div>
+    </div>
+</body>
+</html>

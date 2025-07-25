@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>技術資産価値最大化プラン</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f5f7fa; }
+    .slide {
+      display: none; padding: 60px 80px; height: 100vh; box-sizing: border-box;
+      background: white; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      margin: 40px auto; max-width: 1000px;
+    }
+    .slide.active { display: block; }
+    h1, h2 { color: #253049; }
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.25em; margin-top: 0.7em; }
+    ul { font-size: 1.1em; }
+    .nav { text-align: center; margin-top: 24px; }
+    .nav button { margin: 0 8px; padding: 8px 20px; border: none; border-radius: 8px; background: #667eea; color: white; font-size: 1em; cursor: pointer; }
+    .nav button[disabled] { background: #aab; cursor: default;}
+    .svg-wrap { text-align: center; margin-top: 32px; }
+    .formula { background: #eef1fa; border-radius: 6px; display: inline-block; padding: 0.7em 1.3em; font-family: 'Consolas', monospace; font-size: 1.13em; margin-top: 0.8em;}
+    .mini { font-size: 0.92em; color: #889;}
+  </style>
+</head>
+<body>
+
+<section class="slide active" id="slide1">
+  <h1>技術資産価値最大化戦略</h1>
+  <h2>1. 特許取得可能な独自技術</h2>
+  <ul>
+    <li><b>独自リアルタイムMLアンサンブル手法</b>  
+      - 高精度・低遅延を両立する独自フレームワーク（例：オンプレ＋クラウド協調判定）</li>
+    <li><b>多層データガバナンスアーキテクチャ</b>  
+      - 金融業界向けデータフロー＆アクセス制御設計の独自最適化</li>
+    <li><b>自律型コスト最適化エンジン</b>  
+      - システム負荷とコスト状況をリアルタイム最適化するアルゴリズム</li>
+    <li class="mini">→ 特許出願の視点：<br>
+      <ul>
+        <li>アルゴリズム実装・データフロー制御・管理UI構造の権利化</li>
+        <li>技術公開タイミングはOSS展開戦略と連携</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="nav">
+    <button disabled>1</button>
+    <button onclick="showSlide(2)">2</button>
+    <button onclick="showSlide(3)">3</button>
+  </div>
+</section>
+
+<section class="slide" id="slide2">
+  <h1>OSS戦略とエコシステム設計</h1>
+  <h2>2. OSS化によるエコシステム構築</h2>
+  <ul>
+    <li><b>コアアルゴリズム以外をOSS化</b>
+      <ul>
+        <li>プラグイン型インターフェース、APIコネクタ、監査ツールなどをOSSで公開</li>
+        <li>OSS部分は拡張性・透明性・普及促進のため積極開放</li>
+      </ul>
+    </li>
+    <li><b>エコシステム戦略</b>
+      <ul>
+        <li>ユーザー/パートナーが独自拡張可能なSDK設計</li>
+        <li>外部貢献者によるMLモデル・ダッシュボード拡張も受け入れ</li>
+        <li>エンタープライズ向けサポート＆SaaSビジネスに昇華</li>
+      </ul>
+    </li>
+    <li class="mini">→ OSS展開で業界標準化とコミュニティ主導開発を加速</li>
+  </ul>
+  <div class="nav">
+    <button onclick="showSlide(1)">1</button>
+    <button disabled>2</button>
+    <button onclick="showSlide(3)">3</button>
+  </div>
+</section>
+
+<section class="slide" id="slide3">
+  <h1>技術移転パッケージ＆資産評価モデル</h1>
+  <h2>3. 技術移転パッケージ設計</h2>
+  <ul>
+    <li><b>移転パッケージ要素</b>
+      <ul>
+        <li>リファレンス実装テンプレート（ARM/Bicep、Terraform他）</li>
+        <li>詳細設計書・教育教材・運用ハンドブック</li>
+        <li>運用自動化スクリプト・CI/CDテンプレート</li>
+        <li>初期PoCサポート＆カスタマイズ導入サービス</li>
+      </ul>
+    </li>
+    <li><b>資産評価モデル</b>
+      <div class="formula">
+        技術資産価値 <b>V</b> ＝ <b>P</b> × (<b>N</b> + α × <b>C</b> + β × <b>E</b> + γ × <b>S</b>)
+        <br>
+        <span class="mini">
+        ※ P:特許数, N:導入社数, C:コミュニティ貢献度, E:エンタープライズ適用事例, S:SaaS収益, αβγ:重み係数
+        </span>
+      </div>
+    </li>
+  </ul>
+  <h2>4. ビジネスモデル全体像</h2>
+  <div class="svg-wrap">
+    <!-- ビジネスモデルSVG図 -->
+    <svg width="700" height="280" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="c1" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stop-color="#e0ecfc"/>
+          <stop offset="100%" stop-color="#c1d3fe"/>
+        </linearGradient>
+        <filter id="s1" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#222" flood-opacity="0.10"/>
+        </filter>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#667eea"/>
+        </marker>
+      </defs>
+      <!-- 知財ブロック -->
+      <rect x="50" y="60" width="140" height="60" rx="14" fill="#faf3e4" filter="url(#s1)"/>
+      <text x="70" y="95" font-size="18" font-family="Segoe UI" fill="#a77b33">知財・特許</text>
+      <!-- OSS -->
+      <rect x="250" y="20" width="140" height="60" rx="14" fill="#eaf6ff" filter="url(#s1)"/>
+      <text x="278" y="55" font-size="17" font-family="Segoe UI" fill="#2278a3">OSS化</text>
+      <!-- 技術移転 -->
+      <rect x="470" y="60" width="170" height="60" rx="14" fill="#e8fce9" filter="url(#s1)"/>
+      <text x="490" y="95" font-size="17" font-family="Segoe UI" fill="#36a065">技術移転パッケージ</text>
+      <!-- 顧客価値化 -->
+      <rect x="250" y="170" width="140" height="60" rx="14" fill="#faf6ea" filter="url(#s1)"/>
+      <text x="270" y="205" font-size="17" font-family="Segoe UI" fill="#bb7d26">顧客価値化</text>
+      <!-- 矢印 -->
+      <polyline points="190,90 250,50" fill="none" stroke="#667eea" stroke-width="2.5" marker-end="url(#arrow)"/>
+      <polyline points="390,50 470,90" fill="none" stroke="#667eea" stroke-width="2.5" marker-end="url(#arrow)"/>
+      <polyline points="555,120 320,170" fill="none" stroke="#3ea678" stroke-width="2.5" marker-end="url(#arrow)"/>
+      <polyline points="320,230 130,100" fill="none" stroke="#bfa551" stroke-width="2.5" marker-end="url(#arrow)"/>
+      <!-- ラベル -->
+      <text x="145" y="44" font-size="13" fill="#947821">特許保護</text>
+      <text x="378" y="38" font-size="13" fill="#2278a3">OSS展開</text>
+      <text x="510" y="52" font-size="13" fill="#36a065">パッケージ提供</text>
+      <text x="360" y="185" font-size="13" fill="#bb7d26">導入・収益化</text>
+      <text x="95" y="180" font-size="13" fill="#947821">技術フィードバック</text>
+    </svg>
+  </div>
+  <div class="nav">
+    <button onclick="showSlide(1)">1</button>
+    <button onclick="showSlide(2)">2</button>
+    <button disabled>3</button>
+  </div>
+</section>
+
+<script>
+  function showSlide(n) {
+    var slides = document.querySelectorAll('.slide');
+    slides.forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('slide'+n).classList.add('active');
+    window.scrollTo(0,0);
+  }
+</script>
+
+</body>
+</html>
